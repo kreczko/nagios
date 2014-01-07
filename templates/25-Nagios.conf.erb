@@ -1,0 +1,42 @@
+# ************************************
+# Vhost template in module puppetlabs-apache
+# Managed by Puppet
+# ************************************
+
+<VirtualHost *:80>
+  ServerName moonitor.phy.bris.ac.uk
+
+  ## Vhost docroot
+  DocumentRoot /usr/lib64/nagios/cgi-bin
+  ## Alias declarations for resources outside the DocumentRoot
+  ScriptAlias /nagios/cgi-bin/ /usr/lib64/nagios/cgi-bin/
+  Alias /nagios /usr/share/nagios/html
+
+  ## Directories, there should at least be a declaration for /usr/lib64/nagios/cgi-bin
+  <Directory /usr/lib64/nagios/cgi-bin/>
+    Options +ExecCGI
+    AllowOverride ALL
+    Order allow,deny
+    Allow from all
+    AuthType CAS
+    Require user <%= @allowed_users %>
+  </Directory>
+
+  <Directory /usr/share/nagios/html>
+    AllowOverride ALL
+    Order allow,deny
+    Allow from all
+    AuthType CAS
+    Require user phxlk phpwl
+    DirectoryIndex index.php
+  </Directory>
+
+  ## Logging
+  ErrorLog /var/log/httpd/logs/nagios_error_log
+  LogLevel warn
+  ServerSignature Off
+  CustomLog /var/log/httpd/logs/nagios_access_log "common"
+
+  ## Server aliases
+  ServerAlias moonitor.phy.bris.ac.uk
+</VirtualHost>

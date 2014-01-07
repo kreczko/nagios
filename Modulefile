@@ -10,6 +10,6 @@ project_page 'http://hep-puppet.github.io/'
 ## Add dependencies, if any:
 # dependency 'username/name', '>= 1.2.0'
 dependency 'puppetlabs-apache', '>=0.9.0'
-dependency 'heppuppet-grid_repos', '0.1.0'
+dependency 'heppuppet-grid_repos', '>=0.1.0'
 dependency 'puppetlabs-stdlib', '>=4.1.0'
 dependency 'puppetlabs/firewall', '>=0.3.1'

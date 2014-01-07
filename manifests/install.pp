@@ -1,5 +1,6 @@
 # Installation of packages
 class nagios::install (
+  $ensure    = installed,
   $is_server = false,) {
   # for both client and server
   include nagios::cron::kernel_passive
@@ -12,7 +13,7 @@ class nagios::install (
   }
 
   package { 'nrpe':
-    ensure => installed,
+    ensure => $ensure,
     name   => $nrpe_name,
   }
 
@@ -23,12 +24,12 @@ class nagios::install (
   }
 
   package { 'nsca-client':
-    ensure => installed,
+    ensure => $ensure,
     name   => $nsca_client_name,
   }
 
   package { 'nagios-plugins':
-    ensure  => installed,
+    ensure  => $ensure,
     require => Class['grid_repos'],
   }
 
@@ -39,7 +40,7 @@ class nagios::install (
       'nagios-plugins-perl',
       'nagios-plugins-check-tcptraffic',
       'perl-DateTime']:
-      ensure  => installed,
+      ensure  => $ensure,
       require => Class['grid_repos'],
     }
   }
@@ -49,12 +50,12 @@ class nagios::install (
       'nagios-plugins-basic',
       'nagios-plugins-standard',
       'nagios-plugins-extra']:
-      ensure => installed,
+      ensure => $ensure,
     }
 
     # Install some perl modules on Debian as they don't seem to get pulled in by
     # any dependencies
-    package { 'libnagios-plugin-perl': ensure => installed, }
+    package { 'libnagios-plugin-perl': ensure => $ensure, }
   }
 
   if $is_server == true { # server only
@@ -63,7 +64,7 @@ class nagios::install (
       'pnp4nagios',
       'nagios-plugins-nrpe',
       'nsca']:
-      ensure => installed,
+      ensure => $ensure,
     }
 
     # Install apache web server and add httpd to the nagios group

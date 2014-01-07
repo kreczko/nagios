@@ -9,6 +9,6 @@ class nagios::cron::check_nagios_config_passive {
     minute      => 0,
     month       => '*',
     weekday     => '*',
-    require     => File['check_nagios_config_passive'],
+    require     => File['check_nagios_config'],
   }
 }

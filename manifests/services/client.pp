@@ -4,17 +4,18 @@ class nagios::services::client {
   $warnload = $::processorcount * 7
   $critload = $::processorcount * 10
 
-  $lib      = $::architecture ? {
+  $lib = $::architecture ? {
     'i386'   => 'lib',
     'x86_64' => 'lib64',
     default  => 'lib',
   }
 
   $nrpe_service_name = $::osfamily ? {
-      'RedHat' => 'nrpe',
-      'Debian' => 'nagios-nrpe-server',
-      default  => 'nrpe',
-    }
+    'RedHat' => 'nrpe',
+    'Debian' => 'nagios-nrpe-server',
+    default  => 'nrpe',
+  }
+
   # Start the monitoring services
   service { 'nrpe':
     ensure     => running,
@@ -45,14 +46,14 @@ class nagios::services::client {
   include nagios::services::memory
   # ### UPTIME
   include nagios::services::uptime
-  # ### SELINUX
-  include nagios::services::selinux
   # ### NRPE
   include nagios::services::nrpe
   # ### AAAA RECORD
   include nagios::services::aaaa_record
   # ### CPU
   include nagios::services::cpu
+  # kernel checks
+  include nagios::cron::kernel_passive
 
   # Now add the check for each individual interface on this machine
   $interfaces_array = split($::interfaces, ',')

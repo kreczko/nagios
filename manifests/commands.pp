@@ -4,14 +4,14 @@ class nagios::commands {
     command_line => '$USER1$/check_ftp -H $HOSTADDRESS$ $ARG1$',
   }
 
-  $host_email = template('nagios/host_email.erb')
+  $host_email = '***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\nHost: $HOSTNAME$\nState: $HOSTSTATE$\nAddress: $HOSTADDRESS$\nInfo: $HOSTOUTPUT$\n\nDate/Time: $LONGDATETIME$\n'
   $host_subject = '"** $NOTIFICATIONTYPE$ Host Alert: $HOSTNAME$ is $HOSTSTATE$ **"'
   $host_sendmail = "/bin/mail -s ${host_subject}"
   nagios_command { 'notify-host-by-email':
     command_line => "/usr/bin/printf \"%b\" \"${host_email}\" | ${host_sendmail}",
   }
 
-  $service_email = template('nagios/service_email.erb')
+  $service_email = '***** Nagios *****\n\nNotification Type: $NOTIFICATIONTYPE$\n\nService: $SERVICEDESC$\nHost: $HOSTALIAS$\nAddress: $HOSTADDRESS$\nState: $SERVICESTATE$\n\nDate/Time: $LONGDATETIME$\n\nAdditional Info:\n\n$SERVICEOUTPUT$'
   $service_subject = '"** $NOTIFICATIONTYPE$ Service Alert: $HOSTALIAS$/$SERVICEDESC$ is $SERVICESTATE$ **"'
   $service_sendmail = "/bin/mail -s ${service_subject}"
 

@@ -1,5 +1,7 @@
 # Core Nagios plugins used on all servers
-class nagios::plugins::core {
+class nagios::plugins::core (
+  $n_user_warning  = 5,
+  $n_user_critical = 10,) {
   nagios::plugin { 'check_ads': }
 
   nagios::config::nrpe { 'check_ads':
@@ -8,9 +10,7 @@ class nagios::plugins::core {
 
   nagios::plugin { 'check_cpu': }
 
-  nagios::config::nrpe { 'check_cpu':
-    command => 'check_cpu',
-  }
+  nagios::config::nrpe { 'check_cpu': command => 'check_cpu', }
 
   nagios::plugin { 'check_daemons': }
 
@@ -129,29 +129,8 @@ class nagios::plugins::core {
 
   nagios::config::nrpe { 'check_mailq': command => 'check_mailq -w 5 -c 10', }
 
-  nagios::config::nrpe { 'check_tcptraffic':
-    command => 'check_tcptraffic -i eth0 -s 1000 -w 75000000 -c 90000000',
-  }
-
-  nagios::config::nrpe { 'check_tcptraffic_eth0':
-    command => 'check_tcptraffic -i eth0 -s 1000 -w 75000000 -c 90000000',
-  }
-
-  nagios::config::nrpe { 'check_tcptraffic_eth1':
-    command => 'check_tcptraffic -i eth1 -s 1000 -w 75000000 -c 90000000',
-  }
-
-  nagios::config::nrpe { 'check_tcptraffic_bond0':
-    command => 'check_tcptraffic -i bond0 -s 1000 -w 75000000 -c 90000000',
-  }
-
-  nagios::config::nrpe { 'check_tcptraffic_bond0_383':
-    command => 'check_tcptraffic -i bond0.383 -s 1000 -w 75000000 -c 90000000',
-  }
-
-  nagios::config::nrpe { 'check_tcptraffic_bond0_67':
-    command => 'check_tcptraffic -i bond0.67 -s 1000 -w 75000000 -c 90000000',
-  }
+  $interfaces_array = split($::interfaces, ',')
+  nagios::plugins::tcp_traffic { [$interfaces_array]: }
 
   nagios::config::nrpe { 'check_linux_bonding':
     command => 'check_linux_bonding',
@@ -168,7 +147,4 @@ class nagios::plugins::core {
 
   # This plugin is not run via NRPE, but actually via cron and NSCA
   nagios::plugin {'check_kernel_passive':}
-
-  # This plugin is not run via NRPE, but actually via cron and NSCA
-  nagios::plugin {'check_hardware_spec': }
 }

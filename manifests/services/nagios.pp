@@ -32,12 +32,6 @@ class nagios::services::nagios {
   # Also run the check every hour, so the passive check can't get stale
   include nagios::cron::check_nagios_config_passive
 
-  #  file { 'check_nagios_config_passive_symlink':
-  #    ensure => link,
-  #    name   => '/etc/cron.hourly/check_nagios_config_passive',
-  #    target => '/usr/lib64/nagios/plugins/check_nagios_config_passive',
-  #  }
-
   # Passive Nagios service definition for the above
   $check_dummy = 'check_dummy!1 "No passive checks for at least 48h"'
   @@nagios_service { "check_nagios_config_${::fqdn}":

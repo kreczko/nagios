@@ -54,5 +54,5 @@ sub pushNagios {
         my $status = shift;
         my $text = shift;
         $text =~ s/[^0-9a-z-\.\ _]//gi;
-        my $return = `echo "$hostname,Nagios config,$status,$text" | /usr/sbin/send_nsca -d , -H <%= scope.lookupvar("::monitoring_server") %>`;
+        my $return = `echo "$hostname,Nagios config,$status,$text" | /usr/sbin/send_nsca -d , -H <%= @nagios_server %>`;
 }

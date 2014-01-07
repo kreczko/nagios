@@ -50,25 +50,26 @@ class nagios::config::client (
     tag             => $::domain,
   }
 
-  # Install SELinux NRPE policy
-  #  if $::osfamily == 'RedHat' {
-  #    selinux::module { 'resnet-nrpe':
-  #      ensure => 'present',
-  #      source => 'puppet:///modules/nagios/nrpe/resnet-nrpe.te',
-  #    }
-  #  }
   # Install base nrpe config
   file { '/etc/nagios/nrpe.cfg':
     ensure  => present,
-    mode    => '0755',
-    owner   => 'root',
-    group   => 'root',
+    mode    => '0644',
+    owner   => 'nrpe',
+    group   => 'nrpe',
     content => template('nagios/nrpe.cfg.erb'),
     require => Package['nrpe'],
     notify  => Service['nrpe'],
   }
 
-  # Install supplementary nrpe config
+  # install base send_nsca.cfg
+  file {'/etc/nagios/send_nsca.cfg':
+    ensure => present,
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    source => 'puppet:///modules/nagios/send_nsca.cfg',
+    require => Package['nsca-client'],
+  }
 
   # Add a symlink for the different path on ubuntu
   if $::osfamily == 'Debian' {

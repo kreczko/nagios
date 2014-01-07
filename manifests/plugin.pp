@@ -9,9 +9,8 @@
 # http://docs.puppetlabs.com/guides/custom_facts.html
 define nagios::plugin () {
   $templated_plugins = [
-    'check_hardware_spec',
     'check_kernel_passive',
-    'check_nagios_config_passive']
+    'check_nagios_config_passive',]
 
   $is_templated = member($templated_plugins, $title)
   $defaults = {
