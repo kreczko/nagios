@@ -3,7 +3,7 @@ class nagios::install (
   $ensure    = installed,
   $is_server = false,) {
   # for both client and server
-  include nagios::cron::kernel_passive
+  class { 'nagios::cron::kernel_passive': }
   include nagios::plugins::core
 
   $nrpe_name = $::osfamily ? {

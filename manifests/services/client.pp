@@ -52,8 +52,6 @@ class nagios::services::client {
   include nagios::services::aaaa_record
   # ### CPU
   include nagios::services::cpu
-  # kernel checks
-  include nagios::cron::kernel_passive
 
   # Now add the check for each individual interface on this machine
   $interfaces_array = split($::interfaces, ',')

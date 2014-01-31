@@ -107,9 +107,6 @@ class nagios::config::client (
 
   # Elsewhere add to the parameters for that virtual resource using plusignment
   User <| title == 'nrpe' |> {
-    groups +> 'sudoers'
-  }
-  User <| title == 'nrpe' |> {
     groups +> 'puppet'
   }
 
