@@ -27,21 +27,10 @@ class nagios::plugins::core (
     require => Package['sysstat'],
   }
 
-  $iostat_params = '-c 100000,100000,100000 -w 50000,50000,50000'
-  nagios::config::nrpe { 'check_iostat_sda':
-    command => "check_iostat -d sda ${iostat_params}",
-  }
-
-  nagios::config::nrpe { 'check_iostat_sdb':
-    command => "check_iostat -d sdb ${iostat_params}",
-  }
-
-  nagios::config::nrpe { 'check_iostat_sdc':
-    command => "check_iostat -d sdc ${iostat_params}",
-  }
-
-  nagios::config::nrpe { 'check_iostat_sdd':
-    command => "check_iostat -d sdd ${iostat_params}",
+  $disks_array = split($::disks, ',')
+  nagios::plugins::iostat { [$disks_array]:
+    warning  => 50000,
+    critical => 100000,
   }
 
   nagios::plugin { 'check_kernel': }
