@@ -102,13 +102,16 @@ class nagios::config::client (
     require => Package['nrpe'],
   }
 
+  # Add a VIRTUAL nagios user (should be created by nagios package)
+  @user { 'nagios':
+    ensure  => present,
+    require => Package['nagios-plugins-all'],
+  }
+
   # Then realize that virtual user with collection syntax
   User <| title == 'nrpe' |>
 
   # Elsewhere add to the parameters for that virtual resource using plusignment
-  User <| title == 'nrpe' |> {
-    groups +> 'sudoers'
-  }
   User <| title == 'nrpe' |> {
     groups +> 'puppet'
   }

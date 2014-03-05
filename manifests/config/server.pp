@@ -199,5 +199,4 @@ class nagios::config::server (
     cas_login_url    => $cas_login_url,
     cas_users        => $cas_users,
   }
-
 }

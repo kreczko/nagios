@@ -9,6 +9,7 @@ branches:
   only:
     - master
     - development
+    - fixing_tests
 
 notifications:
   email: false

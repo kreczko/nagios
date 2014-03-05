@@ -30,22 +30,20 @@ describe 'nagios' do
     # files
     it { should contain_file('/etc/nagios/nrpe.cfg').with({
         'ensure' => 'present',
-        'owner'  => 'root',
-        'group'  => 'root',
+        'owner'  => 'nrpe',
+        'group'  => 'nrpe',
         'mode'   => '0644',
       })}
     # users
-    # nrpe user needs to be in the sudoers group
     it { should contain_user('nrpe') }
-    # the sudoers group needs to be configured to have sudo rights
-    it { should contain_group("sudoers") }
   end
 
   describe 'Test standard installation on RedHat (server)' do
     let(:params) { {:is_server => true } }
+    # classes
+    it { should contain_class('apache') }
     # packages
     it { should contain_package('nagios').with_ensure('installed') }
-    it { should contain_package('apache').with_ensure('installed') }
     it { should contain_package('pnp4nagios').with_ensure('installed') }
     it { should contain_package('nagios-plugins-nrpe').with_ensure('installed') }
     it { should contain_package('nsca').with_ensure('installed') }
@@ -55,22 +53,22 @@ describe 'nagios' do
     it { should contain_service('httpd').with_ensure('running') }
     it { should contain_service('httpd').with_enable('true') }
     # files
-    it {should contain_file('resource.cfg').with({
+    it {should contain_file('/etc/nagios/private/resource.cfg').with({
         'owner' => 'root',
         'group' => 'nagios',
         'mode' => '0640',
       })}
-    it {should contain_file('nagios.cfg').with({
+    it {should contain_file('/etc/nagios/nagios.cfg').with({
         'owner' => 'root',
         'group' => 'nagios',
         'mode' => '0640',
       })}
-    it {should contain_file('nsca.cfg').with({
+    it {should contain_file('/etc/nagios/nsca.cfg').with({
         'owner' => 'root',
         'group' => 'root',
         'mode' => '0600',
       })}
-    it {should contain_file('cgi.cfg').with({
+    it {should contain_file('/etc/nagios/cgi.cfg').with({
         'owner' => 'root',
         'group' => 'nagios',
         'mode' => '0640',
@@ -78,11 +76,6 @@ describe 'nagios' do
     # users
     # the apache user has to be in the nagios group
     it { should contain_user('apache') }
-    # the nagios user needs to be in the sudoers group
-    it { should contain_user('nagios') }
-    # otherwise nagios cannot run due to liminitations in the
-    # creation of the config files by @nagios_* (owner == root)
-    # the sudoers group is already tested in the client setup (server > client)
   end
 
 end
