@@ -53,22 +53,22 @@ describe 'nagios' do
     it { should contain_service('httpd').with_ensure('running') }
     it { should contain_service('httpd').with_enable('true') }
     # files
-    it {should contain_file('resource.cfg').with({
+    it {should contain_file('/etc/nagios/private/resource.cfg').with({
         'owner' => 'root',
         'group' => 'nagios',
         'mode' => '0640',
       })}
-    it {should contain_file('nagios.cfg').with({
+    it {should contain_file('/etc/nagios/nagios.cfg').with({
         'owner' => 'root',
         'group' => 'nagios',
         'mode' => '0640',
       })}
-    it {should contain_file('nsca.cfg').with({
+    it {should contain_file('/etc/nagios/nsca.cfg').with({
         'owner' => 'root',
         'group' => 'root',
         'mode' => '0600',
       })}
-    it {should contain_file('cgi.cfg').with({
+    it {should contain_file('/etc/nagios/cgi.cfg').with({
         'owner' => 'root',
         'group' => 'nagios',
         'mode' => '0640',

@@ -200,4 +200,10 @@ class nagios::config::server (
     cas_users        => $cas_users,
   }
 
+  # Add a VIRTUAL nagios user (should be created by nagios package)
+  @user { 'nagios':
+    ensure  => present,
+    require => Package['nagios'],
+  }
+
 }
