@@ -75,7 +75,7 @@ describe 'nagios' do
       })}
     # users
     # the apache user has to be in the nagios group
-    it { should contain_user('apache').with({'group' => 'nagios'}) }
+    it { should contain_user('apache') }
   end
 
 end
